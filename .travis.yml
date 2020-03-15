@@ -33,7 +33,7 @@ before_deploy:
   - stage=$(mktemp -d)
   - src=$(pwd)
   - test -f Cargo.lock || cargo generate-lockfile
-  - cross rustc --target $TARGET --release
+  - RUSTFLAGS="-C rpath" cross rustc --target $TARGET --release
   - cp target/$TARGET/release/*.so $stage
   - cd $stage
   - sudo tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
@@ -68,3 +68,8 @@ cache: cargo
 before_cache:
   # Travis can't cache files that are not readable by "others"
   - chmod -R a+r $HOME/.cargo
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
