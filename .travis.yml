@@ -2,6 +2,8 @@ os: linux
 dist: trusty
 language: rust
 services: docker
+sudo: required
+
 env:
   global:
     # This will be part of the release tarball
@@ -34,6 +36,7 @@ before_deploy:
   - cross rustc --target $TARGET --release
   - cp target/$TARGET/release/*.so $stage
   - cd $stage
+  - ls
   - tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
   - cd $src
   - rm -rf $stage
@@ -45,7 +48,7 @@ deploy:
   # - Call `travis encrypt $github_token` where $github_token is the token you got in the previous
   # step and `travis` is the official Travis CI gem (see https://rubygems.org/gems/travis/)
   # - Enter the "encrypted value" below
-  token: secure_key_here
+  token: hzrGtuGrvg5xj0X3LBvVzjTES4MV4Gsux5poJHref0OX9fiUTT6hbWuHBgXROPOESRLtn8pCmxfDePggUn+P6Yp0oY7w2mh2+nrr8dfoULjOM8dIKWbSYfQUgnaPtQpq3WB1YNwULbEL9gvvq+4aQQTxyNtyJOZEaPVzaLV5xXgPJxX0E6Umgx/jRvc3eXnt3/oIgYEx7UwwdKypJ27/ab3jLiZ0JjLG7s2tyTNyqy6k+Li+Y1RQtUpjIKTkv6wEvWODlGYAVnr0sllrZCVODO8xdStN9mcIRsiPnxxemVD/kv8yesU3i4l5tc0pEAypE5/QwuYsNOYcl+SZvmtLDoXQ6U1WD1yuQyUtf5UEWcIvImkOuvvb/UIwO0FOSUyTePBeMB6AMRiuX6sKfdKNA5pKxWzRkjvUExb1IDt+4ETuyZJUmhQjm6OSCBG5rI54IxKhGFiYsPxMAiTNkIbdFuH9vqvwjel4FpvSCyNAFjMKJw5sfvTrFbX0X9Ii2OyNaXAdrXDXKTBZ+lgtbAyD8eTgXgePRagOL/0kgUjm3wn2Hn4ZVpm2RG9Zo5qlv2FomTE2e8Zh0bUBkzHRf3QL7J1yY96pJdL+xiYW0uw7m6KbNSJhPuJZVsBszNgfKdOMMglSNvB68z0HeIHFvkynagc+RgpmCDVz13ORm0Kgx1U=
   file_glob: true
   file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
   # don't delete the artifacts from previous phases
