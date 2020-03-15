@@ -1,6 +1,6 @@
 [package]
 name = "minimal_cross_manylinux"
-version = "0.8.0"
+version = "0.9.0"
 authors = ["Stephan Hügel <urschrei@gmail.com>"]
 edition = "2018"
 
