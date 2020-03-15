@@ -1,0 +1,61 @@
+os: linux
+dist: trusty
+language: rust
+services: docker
+env:
+  global:
+    # This will be part of the release tarball
+    # TODO change the project name
+    - CRATE_NAME=minimal_cross_manylinux
+
+jobs:
+  include:
+    - os: linux
+      rust: stable
+      env: TARGET=x86_64-unknown-linux-gnu
+      services: docker
+
+before_install:
+  - set -e
+
+install:
+  - cargo install cross
+  - source ~/.cargo/env || true
+
+script:
+  - cross test --target $TARGET
+
+after_script: set +e
+
+before_deploy:
+  - shell_session_update() { :; };
+  - stage=$(mktemp -d)
+  - test -f Cargo.lock || cargo generate-lockfile
+  - cross rustc --target $TARGET --release
+  - cp target/$TARGET/release/*.so $stage
+  - cd $stage
+  - tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
+  - cd $src
+  - rm -rf $stage
+
+deploy:
+  # TODO Regenerate this api_key for your project, this one won't work for you. Here's how:
+  # - Go to 'https://github.com/settings/tokens/new' and generate a Token with only the
+  # `public_repo` scope enabled
+  # - Call `travis encrypt $github_token` where $github_token is the token you got in the previous
+  # step and `travis` is the official Travis CI gem (see https://rubygems.org/gems/travis/)
+  # - Enter the "encrypted value" below
+  token: secure_key_here
+  file_glob: true
+  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
+  # don't delete the artifacts from previous phases
+  cleanup: false
+  # deploy when a new tag is pushed
+  on:
+    # TODO Here you can pick which targets will generate binary releases
+    # In this example, there are some targets that are tested using the stable
+    # and nightly channels. This condition makes sure there is only one release
+    # for such targets and that's generated using the stable channel
+    condition: $TRAVIS_RUST_VERSION = stable
+    tags: true
+  provider: releases
