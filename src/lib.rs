@@ -1,5 +1,7 @@
+use libc::c_int;
+
 #[no_mangle]
-pub extern "C" fn double(n: i32) -> i32 {
+pub extern "C" fn double(n: c_int) -> c_int {
     n * 2
 }
 

@@ -1,12 +1,15 @@
 [package]
 name = "minimal_cross_manylinux"
-version = "0.13.0"
+version = "0.14.0"
 authors = ["Stephan Hügel <urschrei@gmail.com>"]
 edition = "2018"
 license = "The Blue Oak Model License 1.0.0"
 build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "0.2.67"
 
 [build-dependencies]
 cbindgen = "0.13.1"
