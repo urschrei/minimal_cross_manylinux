@@ -3,6 +3,7 @@ name = "minimal_cross_manylinux"
 version = "0.10.0"
 authors = ["Stephan Hügel <urschrei@gmail.com>"]
 edition = "2018"
+license = "The Blue Oak Model License 1.0.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
