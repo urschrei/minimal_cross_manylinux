@@ -35,6 +35,7 @@ before_deploy:
   - test -f Cargo.lock || cargo generate-lockfile
   - RUSTFLAGS="-C rpath" cross rustc --target $TARGET --release
   - cp target/$TARGET/release/*.so $stage
+  - cp include/header.h $stage
   - cd $stage
   - sudo tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
   - cd $src
