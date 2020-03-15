@@ -1,8 +1,6 @@
 os: linux
-dist: trusty
 language: rust
 services: docker
-sudo: required
 
 env:
   global:
@@ -37,9 +35,9 @@ before_deploy:
   - cp target/$TARGET/release/*.so $stage
   - cd $stage
   - ls
-  - tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
+  - sudo tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
   - cd $src
-  - rm -rf $stage
+  - sudo rm -rf $stage
 
 deploy:
   # TODO Regenerate this api_key for your project, this one won't work for you. Here's how:
@@ -62,3 +60,8 @@ deploy:
     condition: $TRAVIS_RUST_VERSION = stable
     tags: true
   provider: releases
+
+cache: cargo
+before_cache:
+  # Travis can't cache files that are not readable by "others"
+  - chmod -R a+r $HOME/.cargo
