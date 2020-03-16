@@ -18,7 +18,7 @@ cbindgen = "0.13.1"
 name = "minimal_cross_manylinux"
 crate-type = ["cdylib"]
 test = true
-doctest = false
+doctest = true
 doc = true
 
 [profile.release]
