@@ -1,6 +1,6 @@
 [package]
 name = "minimal_cross_manylinux"
-version = "0.14.0"
+version = "0.15.0"
 authors = ["Stephan Hügel <urschrei@gmail.com>"]
 edition = "2018"
 license = "The Blue Oak Model License 1.0.0"
